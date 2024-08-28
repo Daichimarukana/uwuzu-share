@@ -1,0 +1,251 @@
+@import url('https://fonts.googleapis.com/css2?family=BIZ+UDGothic:wght@400;700&family=BIZ+UDPGothic:wght@400;700&family=Inter:wght@100..900&display=swap');
+::-webkit-scrollbar{
+    display: none;
+}
+body{
+    margin: 0px;
+    width: 100%;
+    height: 100dvh;
+    background-color: #F5F5F5;
+    position: relative;
+}
+main{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 30%;
+    height: 75dvh;
+    background-color: #F7F7F7;
+    border-radius: 15px;
+    border: solid 1px #CCC;
+    box-shadow: 0 0px 48px 0 rgba(0, 0, 0, .05);
+}
+h1{
+    color:#252525;
+}
+p{
+    color: #252525;
+}
+main h1{
+    font-family: "Inter", "BIZ UDPGothic", sans-serif;
+    text-align: center;
+    font-size: 32px;
+    font-weight: bold;
+}
+main p{
+    font-family: "Inter", "BIZ UDPGothic", sans-serif;
+    text-align: center;
+    font-size: 16px;
+    font-weight: normal;
+}
+main .serverlist{
+    width: auto;
+    max-height: 56%;
+    margin: 16px;
+    border-radius: 10px;
+    border: solid 1px #CCC;
+    overflow: scroll;
+}
+main .serverlist .items{
+    display: block;
+    width: 100%;
+    height: 64px;
+    margin: 0px;
+    border-bottom: solid 1px #CCC;
+    text-decoration: none;
+}
+main .serverlist .items:last-child{
+    border-bottom: none;
+}
+main .serverlist .items .flexbox{
+    width: 100%;
+    display: flex;
+}
+main .serverlist .items .flexbox img{
+    width: 48px;
+    height: 48px;
+    border-radius: 5px;
+    object-fit: cover;
+    margin: 8px;
+}
+main .serverlist .items .flexbox .text{
+    width: fit-content;
+    height: 48px;
+    margin: 8px auto 8px 0px;
+}
+main .serverlist .items .flexbox .text h1{
+    font-family: "Inter", "BIZ UDPGothic", sans-serif;
+    text-align: left;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 2px 0px 0px 0px;
+}
+main .serverlist .items .flexbox .text p{
+    font-family: "Inter", "BIZ UDPGothic", sans-serif;
+    text-align: left;
+    font-size: 12px;
+    font-weight: normal;
+    margin: 0px;
+}
+main .serverlist .items .flexbox .text .red{
+    color: #FF4848;
+}
+.loading {
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 32px;
+    animation: rotate 0.5s infinite linear;
+}
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+main .addbox{
+    width: auto;
+    max-height: fit-content;
+    margin: 16px;
+    padding: 16px;
+    border-radius: 10px;
+    border: solid 1px #CCC;
+    overflow: hidden;
+}
+main .addbox h1{
+    font-family: "Inter", "BIZ UDPGothic", sans-serif;
+    text-align: left;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0px;
+}
+main .addbox p{
+    font-family: "Inter", "BIZ UDPGothic", sans-serif;
+    text-align: left;
+    font-size: 14px;
+    font-weight: normal;
+    margin: 0px;
+}
+main .addbox .flexbox{
+    margin-top: 8px;
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content: space-between;
+}
+main .addbox .flexbox input{
+    font-family: "Inter", "BIZ UDPGothic", sans-serif;
+    width: calc(80% - 2pc);
+    height: 32px;
+    padding-left: 8px;
+    background-color: #F5F5F5;
+    font-size: 14px;
+    border-radius: 50px;
+    border: solid 1px #CCC;
+    outline: none;
+}
+main .addbox .flexbox button{
+    cursor: pointer;
+    font-family: "Inter", "BIZ UDPGothic", sans-serif;
+    font-size: 16px;
+    color: #FFFAE6;
+    width: 22%;
+    height: 36px;
+    background-color: #FFC832;
+    border-radius: 50px;
+    border: none;
+    outline: none;
+}
+
+.error {
+    position: absolute;
+    animation: slideDown 5.0s ease-in-out forwards;
+    margin-top: 32px;
+    margin-right: auto;
+    margin-left: auto;
+    right: 0;
+    left: 0;
+    width: fit-content;
+    height: 32px;
+    z-index: 9999;
+    background-color: #FF4848;
+    border-radius: 20px;
+    box-shadow: 0 0px 48px 0 rgba(0, 0, 0, .15);
+    text-decoration: none;
+}
+.error p{
+    margin-top: 4px;
+    margin-bottom: 4px;
+    margin-left: 12px;
+    margin-right: 12px;
+    line-height: 24px;
+    font-family: "Inter", "BIZ UDPGothic", sans-serif;
+    font-size: 16px;
+    color: #F7F7F7;
+    color: transparent; 
+    text-shadow: 0 0 0 #F7F7F7;
+    text-align: center;
+}
+@keyframes slideDown {
+    0%, 100% { transform: translateY(-40dvh); }
+    20%, 90% { transform: translateY(0px); }
+}
+
+.footer{
+    position: absolute;
+    left: 16px;
+    bottom: 16px;
+}
+.footer a{
+    margin: 0px;
+    text-decoration: none;
+    font-family: "Inter", "BIZ UDPGothic", sans-serif;
+    font-size: 16px;
+    color: #252525;
+}
+
+@media screen and (max-width: 1080px) {
+	main{
+        width: 100%;
+        height: 100dvh;
+        border-radius: 0px;
+        border: none;
+        box-shadow: none;
+    }
+}
+@media (prefers-color-scheme: dark) {
+    body{
+        background-color: #0a0a0a;
+    }
+    main{
+        background-color: #181616;
+        border: none;
+    }
+    h1{
+        color:#F5F5F5;
+    }
+    p{
+        color: #F5F5F5;
+    }
+    main .serverlist{
+        border: none;
+    }
+    main .serverlist .items{
+        background-color: #0a0a0a;
+        border-bottom: solid 3px #181616;
+    }
+    main .addbox{
+        background-color: #0a0a0a;
+        border: none;
+    }
+    main .addbox .flexbox input{
+        background-color: #181616;
+        border: none;
+    }
+    .footer a{
+        color: #f5f5f5;
+    }
+}

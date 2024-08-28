@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <link rel="stylesheet" href="css/style.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+        <link rel="icon" type="image/png" href="/img/favicon.png">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>uwuzuに共有！</title>
+    </head>
+    <body>
+        <div id="error" class="error" style="display:none;">
+			<p>Error</p>
+		</div>
+
+        <main>
+            <h1>uwuzuに共有</h1>
+            <p>共有先のサーバーを選んでください！</p>
+            <div class="serverlist" id="serverlist">
+                <div id="loading" class="loading" style="display: none;">
+                    🤔
+                </div>
+            </div>
+
+            <div class="addbox">
+                <h1>サーバーを追加</h1>
+                <p>サーバーのドメインを入力してください</p>
+                <div class="flexbox">
+                    <input id="domain" placeholder="uwuzu.example.com">
+                    <button id="add">Add</button>
+                </div>
+            </div>
+
+            <div class="footer">
+                <a href="https://www.uwuzu.com">©2024 uwuzu</a>
+            </div>
+        </main>
+    </body>
+    <script>
+    function showError(text){
+        $("#error").children("p").text(text);
+        $("#error").show();
+        setTimeout(function(){
+            $("#error").hide();
+        }, 5000);
+    }
+    $(document).ready(function() {
+        $("#loading").show();
+
+        var user_domains = [];
+        var cookie = $.cookie('domains');   
+        if(cookie){
+            user_domains = (JSON.parse($.cookie('domains'))).serverlist;
+        }
+        
+        fetch('/serverlist.json')
+            .then(response => response.text())
+            .then(json => {
+                const new_json = JSON.parse(json);
+                var serverlist = Array.from(new Set((new_json.serverlist).concat(user_domains)));
+
+                serverlist.forEach(server_domain => {
+                    fetch("https://"+server_domain+"/api/serverinfo-api")
+                        .then(response => {
+                            if (!response.ok) {
+                                showError("uwuzuサーバーである確認ができませんでした。");
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            var server_icon_img;
+                            if (data.server_info.server_icon.length) {
+                                server_icon_img = '<img src="'+data.server_info.server_icon+'">';
+                            } else {
+                                server_icon_img = '<img src="/img/uwuzuicon.png">';
+                            }
+
+                            var all_query = window.location.search;
+                            var query = new URLSearchParams(all_query);
+                            var upload_contents = query.get('text');
+                            if (!upload_contents) {
+                                upload_contents = '';
+                            }
+                            var maxLength = Number(data.server_info.max_ueuse_length);
+                            var span;
+                            if (maxLength < upload_contents.length) {
+                                span = '<span class="red">';
+                            } else {
+                                span = '<span>';
+                            }
+                            var html = `
+                                <a class="items" href="https://${server_domain}/home/?text=${upload_contents}">
+                                    <div class="flexbox">
+                                        ${server_icon_img}
+                                        <div class="text">
+                                            <h1>${data.server_info.server_name}</h1>
+                                            <p>${server_domain} | ${span}${data.server_info.max_ueuse_length}</span></p>
+                                        </div>
+                                    </div>
+                                </a>
+                            `;
+                            $('#serverlist').append(html);
+                        })
+                        .catch(error => {
+                            console.error("サーバーに接続できませんでした。");
+                        });
+                });
+
+                $("#loading").hide();
+            })
+            .catch(error => {
+                console.error('Error 2 JSON');
+                $("#loading").hide();
+            });
+
+        var done_domainlist = [];
+        $("#add").on("click",function(){
+            var address = $("#domain").val();
+            fetch('/serverlist.json')
+                .then(response => response.text())
+                .then(json => {
+                    const new_json = JSON.parse(json);
+                    var serverlist = Array.from(new Set((new_json.serverlist).concat(user_domains)));
+
+                    if(serverlist.includes(address) == false && done_domainlist.includes(address) == false){
+                        fetch("https://"+address+"/api/serverinfo-api")
+                            .then(response => {
+                                if (!response.ok) {
+                                    showError("uwuzuサーバーである確認ができませんでした！");
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                var server_icon_img;
+                                if (data.server_info.server_icon.length) {
+                                    server_icon_img = '<img src="'+data.server_info.server_icon+'">';
+                                } else {
+                                    server_icon_img = '<img src="/img/uwuzuicon.png">';
+                                }
+
+                                var all_query = window.location.search;
+                                var query = new URLSearchParams(all_query);
+                                var upload_contents = query.get('text');
+                                if (!upload_contents) {
+                                    upload_contents = '';
+                                }
+                                var maxLength = Number(data.server_info.max_ueuse_length);
+                                var span;
+                                if (maxLength < upload_contents.length) {
+                                    span = '<span class="red">';
+                                } else {
+                                    span = '<span>';
+                                }
+                                var html = `
+                                    <a class="items" href="https://${address}/home/?text=${upload_contents}">
+                                        <div class="flexbox">
+                                            ${server_icon_img}
+                                            <div class="text">
+                                                <h1>${data.server_info.server_name}</h1>
+                                                <p>${address} | ${span}${data.server_info.max_ueuse_length}</span></p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                `;
+                                $('#serverlist').append(html);
+
+                                done_domainlist.push(address);
+                                $("#domain").val("");
+
+                                user_domains.push(address);
+
+                                var encjson = {
+                                    "serverlist":user_domains
+                                };
+
+                                var save_json = JSON.stringify(encjson);
+
+                                $.cookie(
+                                    'domains',
+                                    save_json,
+                                    {
+                                        expires: 365, 
+                                        path: '/',
+                                        secure: true
+                                    }
+                                );
+
+                            })
+                            .catch(error => {
+                                showError("サーバーに接続できませんでした！");
+                            });
+                    }else{
+                        showError("すでにリストに追加されています！");
+                    }
+            });
+        });
+    });
+
+    </script>
+</html>
