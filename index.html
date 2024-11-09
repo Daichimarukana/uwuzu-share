@@ -32,7 +32,7 @@
             </div>
 
             <div class="footer">
-                <a href="https://www.uwuzu.com">©2024 uwuzu</a>
+                <a href="https://www.uwuzu.xyz">©2024 uwuzu</a>
             </div>
         </main>
     </body>
@@ -78,7 +78,7 @@
 
                             var all_query = window.location.search;
                             var query = new URLSearchParams(all_query);
-                            var upload_contents = query.get('text');
+                            var upload_contents = decodeURIComponent(query.get('text'));
                             if (!upload_contents) {
                                 upload_contents = '';
                             }
@@ -89,8 +89,9 @@
                             } else {
                                 span = '<span>';
                             }
+                            
                             var html = `
-                                <a class="items" href="https://${server_domain}/home/?text=${upload_contents}">
+                                <a class="items" href="https://${server_domain}/home/?text=${encodeURIComponent(upload_contents)}">
                                     <div class="flexbox">
                                         ${server_icon_img}
                                         <div class="text">
@@ -142,7 +143,7 @@
 
                                 var all_query = window.location.search;
                                 var query = new URLSearchParams(all_query);
-                                var upload_contents = query.get('text');
+                                var upload_contents = decodeURIComponent(query.get('text'));
                                 if (!upload_contents) {
                                     upload_contents = '';
                                 }
@@ -154,7 +155,7 @@
                                     span = '<span>';
                                 }
                                 var html = `
-                                    <a class="items" href="https://${address}/home/?text=${upload_contents}">
+                                    <a class="items" href="https://${address}/home/?text=${encodeURIComponent(upload_contents)}">
                                         <div class="flexbox">
                                             ${server_icon_img}
                                             <div class="text">
